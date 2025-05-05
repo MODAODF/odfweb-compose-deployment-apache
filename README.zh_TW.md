@@ -7,6 +7,44 @@
 
 [English](README.md) 台灣中文
 
+## 先決條件
+
+在使用本產品前您應先滿足下列條件：
+
+* 服務主機須已安裝近期版本之 Docker Engine（或其功能對等之）軟體。
+* 在部署服務期間服務主機須有 Docker Hub 容器映像註冊服務之存取能力。
+
+## 使用說明
+
+參閱下列指示以將本產品部署到服務主機上：
+
+1. 於[本產品的釋出頁](https://github.com/MODAODF/odfweb-compose-deployment-apache/releases)下載釋出包。
+1. 將釋出包上傳至服務主機上。
+1. 取得服務主機的命令列界面。
+1. 執行下列命令以解開產品釋出包：
+
+    ```bash
+    tar \
+        --extract \
+        --verbose \
+        --file /path/to/odfweb-container-deployment-apache-X.Y.Z.tar.gz
+    ```
+
+1. 執行下列命令以將作業目錄(working directory)切換到解開的產品目錄：
+
+    ```bash
+    cd /path/to/odfweb-container-deployment-apache-X.Y.Z
+    ```
+
+1. 編輯 [docker-compose.yml Docker Compose 設定檔](docker-compose.yml)，將下列環境變數值的佔位字(`__REDACTED__`)替換為對應之適當值：
+    + `MYSQL_ROOT_PASSWORD`: 「root」資料庫使用者的密碼。
+    + `MYSQL_PASSWORD`: 應用服務之資料庫使用者的密碼。
+1. 執行下列命令以自容器映像創建服務容器並啟動服務：
+
+    ```bash
+    docker compose up -d
+    ```
+
 ## 授權條款
 
 除非另有註明（個別檔案的開頭 / [REUSE.toml](https://reuse.software/spec-3.3/#reusetoml)），本產品以[第 3.0 版之 GNU Affero 通用公眾授權條款](https://www.gnu.org/licenses/agpl-3.0.en.html)（或其任意更近期之版本）釋出供大眾於授權範圍內自由使用。
