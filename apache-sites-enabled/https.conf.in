@@ -1,0 +1,67 @@
+<VirtualHost *:__ODFWEB_PORT_HTTPS__>
+	ServerName __ODFWEB_DOMAIN_NAME__
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www/html
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	SSLEngine on
+    SSLCipherSuite HIGH:!aNULL:!MD5
+
+	SSLCertificateFile      /ssl/__ODFWEB_DOMAIN_NAME__.crt
+	SSLCertificateKeyFile   /ssl/__ODFWEB_DOMAIN_NAME__.key
+
+	<FilesMatch "\.(?:cgi|shtml|phtml|php)$">
+		SSLOptions +StdEnvVars
+	</FilesMatch>
+	<Directory /usr/lib/cgi-bin>
+		SSLOptions +StdEnvVars
+	</Directory>
+
+	BrowserMatch "MSIE [2-6]" \
+		nokeepalive ssl-unclean-shutdown \
+		downgrade-1.0 force-response-1.0
+
+    ########################################
+    # Reverse proxy for MODAODFWEB         #
+    ########################################
+    AllowEncodedSlashes NoDecode
+    ProxyPreserveHost On
+
+    # static html, js, images, etc. served from modaodfweb websocket daemon
+    # browser is the client part of MODAODFWEB
+    ProxyPass           /browser http://editor:9980/browser retry=0
+    ProxyPassReverse    /browser http://editor:9980/browser
+
+    # WOPI discovery URL
+    ProxyPass           /hosting/discovery http://editor:9980/hosting/discovery retry=0
+    ProxyPassReverse    /hosting/discovery http://editor:9980/hosting/discovery
+
+    # Capabilities
+    ProxyPass           /hosting/capabilities http://editor:9980/hosting/capabilities retry=0
+    ProxyPassReverse    /hosting/capabilities http://editor:9980/hosting/capabilities
+
+    # Main websocket
+    ProxyPassMatch      "/(c|ox)ool/(.*)/ws$"      ws://editor:9980/$1ool/$2/ws nocanon
+
+    # Admin Console websocket
+    ProxyPassMatch      "/(c|ox)ool/adminws(/?)$" ws://editor:9980/$1ool/adminws$2
+
+    # Download as, Fullscreen presentation and Image upload operations
+    ProxyPassMatch      "/(c|l|ox)ool" http://editor:9980/$1ool
+    ProxyPassReverse    /cool http://editor:9980/cool
+    ProxyPassReverse    /lool http://editor:9980/lool
+    ProxyPassReverse    /oxool http://editor:9980/oxool
+
+    # Compatibility with integrations that use the /lool/convert-to endpoint
+    #ProxyPassMatch      /lool http://editor:9980/cool
+    #ProxyPassReverse    /lool http://editor:9980/cool
+</VirtualHost>

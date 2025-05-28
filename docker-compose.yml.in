@@ -1,0 +1,90 @@
+# Docker Compose configuration file
+#
+# References:
+#
+# * Compose Specification | Compose file reference | Reference | Docker Docs
+#   https://docs.docker.com/compose/compose-file/
+#
+# Copyright 2025 Buo-ren Lin (OSSII) <buoren@ossii.com.tw>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: odfweb-apache
+volumes:
+  odfweb:
+  db:
+
+services:
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED
+    volumes:
+      - db:/var/lib/mysql
+    env_file:
+      - db.env
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Note: Redis is an external service. You can find more information about the configuration here:
+  # https://hub.docker.com/_/redis
+  redis:
+    image: redis:alpine
+    restart: always
+
+  app:
+    image: cncf-distribution.local/odfweb:4
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - 80:80
+      - __ODFWEB_PORT_HTTPS__:443
+    links:
+      - db
+    volumes:
+      - odfweb:/var/www/html
+      - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
+      - ./apache-sites-enabled:/etc/apache2/sites-enabled
+      - ./ssl/__ODFWEB_DOMAIN_NAME__.crt:/ssl/__ODFWEB_DOMAIN_NAME__.crt:ro
+      - ./ssl/__ODFWEB_DOMAIN_NAME__.key:/ssl/__ODFWEB_DOMAIN_NAME__.key:ro
+    env_file:
+      - db.env
+      - app.env
+    healthcheck:
+      test: 'runuser -s /usr/local/bin/php - www-data /var/www/html/occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 10s
+
+  editor:
+    image: cncf-distribution.local/modaodfweb:3.8-latest
+    restart: always
+    environment:
+      # Set local timezone to UTC+8
+      - TZ=CST-8
+    volumes:
+      - type: bind
+        source: ./modaodfweb-config
+        target: /etc/modaodfweb
+      - type: bind
+        source: ./ssl/__ODFWEB_DOMAIN_NAME__.crt
+        target: /etc/modaodfweb/odfweb.crt
+        read_only: true
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - MKNOD
+      - SYS_ADMIN
+      - SYS_CHROOT
+    ulimits:
+      # docker --ulimit does not support unlimited or large numbers · Issue #12515 · moby/moby
+      # https://github.com/moby/moby/issues/12515
+      nproc: -1
