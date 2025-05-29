@@ -36,14 +36,27 @@
     cd /path/to/odfweb-container-deployment-apache-X.Y.Z
     ```
 
-1. 編輯 [docker-compose.yml Docker Compose 設定檔](docker-compose.yml)，將下列環境變數值的佔位字(`__REDACTED__`)替換為對應之適當值：
-    + `MYSQL_ROOT_PASSWORD`: 「root」資料庫使用者的密碼。
-    + `MYSQL_PASSWORD`: 應用服務之資料庫使用者的密碼。
+1. 如果您有既有的 HTTPS 憑證的話，將它們以下列檔名安裝至 [`ssl` 子目錄](ssl/)：
+    + _域名_.crt：PEM 格式之 X.509v3 完整信任鏈憑證包(full-chain certificate bundle)（即服務憑證後面有串接中繼 CA 與根 CA 憑證）。
+    + _域名_.key：PEM 格式之 PKCS#8 格式私鑰。
+1. 執行下列命令進行產品的初次設定：
+
+    ```bash
+    ./setup.sh
+    ```
+
+   如果您未於先前步驟提供您自己的 HTTPS 憑證該程式將會在此步驟自動生成一自簽憑證。
 1. 執行下列命令以自容器映像創建服務容器並啟動服務：
 
     ```bash
     docker compose up -d
     ```
+
+1. 服務現在應可透過 setup.sh 設定程序所提示之網址存取。
+
+   如果您未於先前步驟提供一被瀏覽器信任之 HTTPS 憑證的話您需要在瀏覽器之「網站未受信任」警告畫面中將網站加入您瀏覽器的白名單。
+
+   為了保護您的帳號安全，您應於使用者選單 > 個人設定 > 安全性 > 密碼頁面重設並妥善保存您的管理員帳號密碼。
 
 ## 授權條款
 
