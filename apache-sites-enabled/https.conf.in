@@ -56,7 +56,7 @@
     ProxyPassMatch      "/(c|ox)ool/adminws(/?)$" ws://editor:9980/$1ool/adminws$2
 
     # Download as, Fullscreen presentation and Image upload operations
-    ProxyPassMatch      "/(c|l|ox)ool" http://editor:9980/$1ool
+    ProxyPassMatch      "/(c|l|ox)ool/(.*)$" http://editor:9980/$1ool/$2
     ProxyPassReverse    /cool http://editor:9980/cool
     ProxyPassReverse    /lool http://editor:9980/lool
     ProxyPassReverse    /oxool http://editor:9980/oxool
