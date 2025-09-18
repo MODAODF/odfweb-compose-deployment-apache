@@ -289,7 +289,7 @@ init(){
     done
 
     printf \
-        'Info: Setting execution permission for the post-installation hook...\n'
+        'Info: Setting execution permission for the post-installation hooks...\n'
     for hook in "${script_dir}/app-hooks/post-installation/"*.sh; do
         if ! chmod +x "${hook}"; then
             printf \
