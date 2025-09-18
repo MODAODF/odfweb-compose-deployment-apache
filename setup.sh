@@ -293,7 +293,7 @@ init(){
     for hook in "${script_dir}/app-hooks/post-installation/"*.sh; do
         # NOTE: Without the users part of a symbolic mode the permission will be restricted by the current umask
         # https://www.gnu.org/software/coreutils/manual/coreutils.html#The-Umask-and-Protection
-        if ! chmod --verbose a+x "${hook}"; then
+        if ! chmod --verbose 0755 "${hook}"; then
             printf \
                 'Error: Unable to set execution permission for the post-installation hook "%s".\n' \
                 "${hook}" \
