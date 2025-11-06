@@ -100,6 +100,6 @@ apache-sites-enabled/https.conf
 app.env
 app-hooks/post-installation/initialize-richdocuments-app.sh
 db.env
-docker-compose.yml
+compose.yml
 modaodfweb-config/modaodfweb.xml
 odfweb.openssl.cnf
