@@ -50,6 +50,7 @@ services:
       - __ODFWEB_PORT_HTTPS__:443
     links:
       - db
+      - editor
     volumes:
       - odfweb:/var/www/html
       - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
