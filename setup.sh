@@ -229,6 +229,7 @@ init(){
         fi
     fi
 
+    original_umask="$(umask)"
     # Don't give others access to the secret files
     if ! umask 177; then
         printf \
@@ -287,6 +288,12 @@ init(){
             exit 2
         fi
     done
+    if ! umask "${original_umask}"; then
+        printf \
+            'Error: Unable to restore the original file creation permissions(umask).\n' \
+            1>&2
+        exit 2
+    fi
 
     local httpd_http_dropin_config="${script_dir}/apache-sites-enabled/http.conf"
     if test "${odfweb_port_https}" -eq 443; then
