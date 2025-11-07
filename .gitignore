@@ -103,3 +103,6 @@ db.env
 compose.yml
 modaodfweb-config/modaodfweb.xml
 odfweb.openssl.cnf
+
+# Don't track Online logs bind mount
+/modaodfweb-logs/
