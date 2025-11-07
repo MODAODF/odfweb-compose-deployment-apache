@@ -288,6 +288,16 @@ init(){
         fi
     done
 
+    local httpd_http_dropin_config="${script_dir}/apache-sites-enabled/http.conf"
+    if test "${odfweb_port_https}" -eq 443; then
+        if ! drop_typical_https_port_designation "${httpd_http_dropin_config}"; then
+            printf \
+                'Error: Unable to drop the typical HTTPS port designation from the httpd HTTP drop-in file.\n' \
+                1>&2
+            exit 2
+        fi
+    fi
+
     printf \
         'Info: Setting execution permission for the post-installation hooks...\n'
     for hook in "${script_dir}/app-hooks/post-installation/"*.sh; do
@@ -369,6 +379,23 @@ init(){
         "${odfweb_admin_password}"
     printf \
         'Info: Please change the password in the user settings web UI.\n'
+}
+
+drop_typical_https_port_designation(){
+    local config_file="${1}"; shift
+
+    local -a sed_opts=(
+        --in-place
+        --regexp-extended
+        -e 's|:443||g'
+    )
+    if ! sed "${sed_opts[@]}" "${config_file}"; then
+        printf \
+            'Error: Unable to patch out typical HTTPS port designation from the "%s" configuration file.\n' \
+            "${config_file}" \
+            1>&2
+        return 1
+    fi
 }
 
 generate_word_passphrase() {
