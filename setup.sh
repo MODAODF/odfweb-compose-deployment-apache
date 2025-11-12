@@ -284,6 +284,20 @@ init(){
             -e "s|__MYSQL_PASSWORD__|${mariadb_password}|g"
             -e "s|__ODFWEB_ADMIN_PASSWORD__|${odfweb_admin_password}|g"
         )
+
+        if test "${odfweb_port_https}" -eq 443; then
+            if ! odfweb_host_regex="$(get_host_regex "${odfweb_host}")"; then
+                printf \
+                    'Error: Unable to convert the "%s" host to regular expression.\n' \
+                    "${odfweb_host}" \
+                    1>&2
+                exit 2
+            fi
+
+            # Drop port specification for typical HTTPS port number
+            sed_opts+=(-e "s|${odfweb_host_regex}:${odfweb_port_https}|${odfweb_host}|g")
+        fi
+
         if ! sed "${sed_opts[@]}" "${template}" > "${config_file}"; then
             printf \
                 'Error: Unable to generate the configuration file "%s" from the template "%s".\n' \
@@ -298,16 +312,6 @@ init(){
             'Error: Unable to restore the original file creation permissions(umask).\n' \
             1>&2
         exit 2
-    fi
-
-    local httpd_http_dropin_config="${script_dir}/apache-sites-enabled/http.conf"
-    if test "${odfweb_port_https}" -eq 443; then
-        if ! drop_typical_https_port_designation "${httpd_http_dropin_config}"; then
-            printf \
-                'Error: Unable to drop the typical HTTPS port designation from the httpd HTTP drop-in file.\n' \
-                1>&2
-            exit 2
-        fi
     fi
 
     printf \
@@ -393,21 +397,17 @@ init(){
         'Info: Please change the password in the user settings web UI.\n'
 }
 
-drop_typical_https_port_designation(){
-    local config_file="${1}"; shift
+# Convert host name to proper regular expression
+get_host_regex(){
+    local host="${1}"; shift
 
-    local -a sed_opts=(
-        --in-place
-        --regexp-extended
-        -e 's|:443||g'
-    )
-    if ! sed "${sed_opts[@]}" "${config_file}"; then
-        printf \
-            'Error: Unable to patch out typical HTTPS port designation from the "%s" configuration file.\n' \
-            "${config_file}" \
-            1>&2
-        return 1
-    fi
+    local result
+
+    # Convert . to \.
+    host="${host//./\\.}"
+
+    result="${host}"
+    printf '%s' "${result}"
 }
 
 generate_word_passphrase() {
