@@ -55,6 +55,10 @@ services:
       - "__ODFWEB_DOMAIN_NAME__:host-gateway"
     volumes:
       - odfweb:/var/www/html
+      - ./apps:/var/www/html/custom_apps
+      - ./config:/var/www/html/config
+      - ./data:/var/www/html/data
+      #- ./theme:/var/www/html/themes/custom
       - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
       - ./apache-sites-enabled:/etc/apache2/sites-enabled
       - ./ssl/__ODFWEB_DOMAIN_NAME__.crt:/ssl/__ODFWEB_DOMAIN_NAME__.crt:ro

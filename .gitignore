@@ -106,3 +106,9 @@ odfweb.openssl.cnf
 
 # Don't track Online logs bind mount
 /modaodfweb-logs/
+
+# Don't track volumes
+/apps/
+/config/
+/data/
+/theme/
