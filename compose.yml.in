@@ -51,6 +51,8 @@ services:
     links:
       - db
       - editor
+    extra_hosts:
+      - "__ODFWEB_DOMAIN_NAME__:host-gateway"
     volumes:
       - odfweb:/var/www/html
       - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
@@ -73,6 +75,8 @@ services:
     environment:
       # Set local timezone to UTC+8
       - TZ=CST-8
+    extra_hosts:
+      - "__ODFWEB_DOMAIN_NAME__:host-gateway"
     volumes:
       - type: bind
         source: ./modaodfweb-config
