@@ -70,3 +70,24 @@
     #ProxyPassMatch      /lool http://editor:9980/cool
     #ProxyPassReverse    /lool http://editor:9980/cool
 </VirtualHost>
+
+<VirtualHost *:80>
+	ServerName __ODFWEB_DOMAIN_NAME__
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+
+	# Redirect all HTTP traffic to HTTPS (preserve path/query)
+	# Uses the configured domain placeholder __ODFWEB_DOMAIN_NAME__
+	# Example: a request to http://example.com/foo -> https://example.com/foo
+	Redirect "/" "https://__ODFWEB_DOMAIN_NAME__:__ODFWEB_PORT_HTTPS__/"
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

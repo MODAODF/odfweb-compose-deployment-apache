@@ -244,8 +244,7 @@ init(){
     fi
 
     config_templates=(
-        "${script_dir}/apache-sites-enabled/http.conf.in"
-        "${script_dir}/apache-sites-enabled/https.conf.in"
+        "${script_dir}/apache-sites-enabled/odfweb.conf.in"
         "${script_dir}/app-hooks/post-installation/initialize-richdocuments-app.sh.in"
         "${script_dir}/app.env.in"
         "${script_dir}/db.env.in"

@@ -95,8 +95,7 @@
 *.pem
 
 # Don't track template-generated files
-apache-sites-enabled/http.conf
-apache-sites-enabled/https.conf
+apache-sites-enabled/odfweb.conf
 app.env
 app-hooks/post-installation/initialize-richdocuments-app.sh
 db.env
