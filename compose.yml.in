@@ -74,7 +74,7 @@ services:
       timeout: 10s
 
   editor:
-    image: cncf-distribution.infra.ossii.com.tw/modaodfweb:3.8-latest
+    image: cncf-distribution.infra.ossii.com.tw/modaodfweb:3.8.4
     restart: always
     environment:
       # Set local timezone to UTC+8
