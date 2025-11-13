@@ -141,6 +141,28 @@ Refer to the following instructions to destroy the service container:
     docker compose down
     ```
 
+### DESTRUCTIVE OPERATIONS
+
+The following operations are DESTRUCTIVE and may RESULT IN DATA LOSS.  Please ensure you have a valid backup of your data before proceeding:
+
+#### Drop all data associated with this service deployment
+
+Refer to the following instructions to drop all data associated with this service deployment:
+
+1. Launch a text terminal
+1. Change the working directory to the directory that hosts this document.
+1. Run the following commands to destroy all the containers and all data in the named volumes:
+
+    ```bash
+    docker compose down --volumes
+    ```
+
+1. Run the following commands _as root_ to delete all datas in the bind-mounted volumes:
+
+    ```bash
+    rm -rvf {apps,config,data,theme}
+    ```
+
 ## Licensing
 
 Unless otherwise noted(individual file's header/[REUSE.toml](https://reuse.software/spec-3.3/#reusetoml)), this product is licensed under [the 3.0 version of the GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html), or any of its recent versions you would prefer.

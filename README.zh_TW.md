@@ -142,6 +142,28 @@
     docker compose down
     ```
 
+### 資料破壞性操作
+
+下列操作**具破壞性**且可能會**導致資料丟失**，請務必在執行前**確認您已備份所有重要資料**：
+
+#### 丟棄與所有與本服務部署關聯之資料
+
+遵循下列步驟以丟棄與本服務部署關聯之所有資料：
+
+1. 啟動一終端機。
+1. 將作業目錄(working directory)切換至本文件所在目錄。
+1. 執行下列命令以摧毀服務容器與具名儲存空間(named volume)之所有資料：
+
+    ```bash
+    docker compose down --volumes
+    ```
+
+1. _以 root 身份_ 執行下列命令以刪除所有綁定掛載(bind-mounted)進容器的儲存空間：
+
+    ```bash
+    rm -rvf {apps,config,data,theme}
+    ```
+
 ## 授權條款
 
 除非另有註明（個別檔案的開頭 / [REUSE.toml](https://reuse.software/spec-3.3/#reusetoml)），本產品以[第 3.0 版之 GNU Affero 通用公眾授權條款](https://www.gnu.org/licenses/agpl-3.0.en.html)（或其任意更近期之版本）釋出供大眾於授權範圍內自由使用。
