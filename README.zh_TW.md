@@ -1,4 +1,4 @@
-# ODFWEB 服務的容器部署（Apache 變體）
+# ODFWEB 服務的 Compose 容器部署（Apache 變體）
 
 快速地部署一個符合需求的 ODFWEB 服務（Apache 變體）
 
@@ -27,13 +27,13 @@
     tar \
         --extract \
         --verbose \
-        --file /path/to/odfweb-container-deployment-apache-X.Y.Z.tar.gz
+        --file /path/to/odfweb-compose-deployment-apache-X.Y.Z.tar.gz
     ```
 
 1. 執行下列命令以將作業目錄(working directory)切換到解開的產品目錄：
 
     ```bash
-    cd /path/to/odfweb-container-deployment-apache-X.Y.Z
+    cd /path/to/odfweb-compose-deployment-apache-X.Y.Z
     ```
 
 1. 如果您有既有的 HTTPS 憑證的話，將它們以下列檔名安裝至 [`ssl` 子目錄](ssl/)：

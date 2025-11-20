@@ -1,4 +1,4 @@
-# Container deployment of the ODFWEB service(Apache variant)
+# Compose container deployment of the ODFWEB service(Apache variant)
 
 Rapidly deploy a ODFWEB service(Apache variant) that meets your requirements.
 
@@ -27,13 +27,13 @@ Refer to the following instructions to deploy this product to the service host:
     tar \
         --extract \
         --verbose \
-        --file /path/to/odfweb-container-deployment-apache-X.Y.Z.tar.gz
+        --file /path/to/odfweb-compose-deployment-apache-X.Y.Z.tar.gz
     ```
 
 1. Run the following command to change the working directory to the extracted product directory:
 
     ```bash
-    cd /path/to/odfweb-container-deployment-apache-X.Y.Z
+    cd /path/to/odfweb-compose-deployment-apache-X.Y.Z
     ```
 
 1. If you have an existing HTTPS certificate to use, install them into [the `ssl` sub-directory](ssl/) under the following names:
