@@ -1,3 +1,8 @@
+# Companion Apache httpd drop-in configuration file for ODFWEB
+#
+# Copyright 2025 Buo-ren Lin (OSSII) <buoren@ossii.com.tw>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 <VirtualHost *:__ODFWEB_PORT_HTTPS__>
 	ServerName __ODFWEB_DOMAIN_NAME__
 	ServerAdmin webmaster@localhost
