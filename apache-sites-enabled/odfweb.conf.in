@@ -4,36 +4,36 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 <VirtualHost *:__ODFWEB_PORT_HTTPS__>
-	ServerName __ODFWEB_DOMAIN_NAME__
-	ServerAdmin webmaster@localhost
+    ServerName __ODFWEB_DOMAIN_NAME__
+    ServerAdmin webmaster@localhost
 
-	DocumentRoot /var/www/html
+    DocumentRoot /var/www/html
 
-	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
-	# error, crit, alert, emerg.
-	# It is also possible to configure the loglevel for particular
-	# modules, e.g.
-	#LogLevel info ssl:warn
+    # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+    # error, crit, alert, emerg.
+    # It is also possible to configure the loglevel for particular
+    # modules, e.g.
+    #LogLevel info ssl:warn
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-	SSLEngine on
+    SSLEngine on
     SSLCipherSuite HIGH:!aNULL:!MD5
 
-	SSLCertificateFile      /ssl/__ODFWEB_DOMAIN_NAME__.crt
-	SSLCertificateKeyFile   /ssl/__ODFWEB_DOMAIN_NAME__.key
+    SSLCertificateFile      /ssl/__ODFWEB_DOMAIN_NAME__.crt
+    SSLCertificateKeyFile   /ssl/__ODFWEB_DOMAIN_NAME__.key
 
-	<FilesMatch "\.(?:cgi|shtml|phtml|php)$">
-		SSLOptions +StdEnvVars
-	</FilesMatch>
-	<Directory /usr/lib/cgi-bin>
-		SSLOptions +StdEnvVars
-	</Directory>
+    <FilesMatch "\.(?:cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
 
-	BrowserMatch "MSIE [2-6]" \
-		nokeepalive ssl-unclean-shutdown \
-		downgrade-1.0 force-response-1.0
+    BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
 
     ########################################
     # Reverse proxy for MODAODFWEB         #
@@ -77,22 +77,22 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName __ODFWEB_DOMAIN_NAME__
+    ServerName __ODFWEB_DOMAIN_NAME__
 
-	ServerAdmin webmaster@localhost
-	DocumentRoot /var/www/html
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
 
-	# Redirect all HTTP traffic to HTTPS (preserve path/query)
-	# Uses the configured domain placeholder __ODFWEB_DOMAIN_NAME__
-	# Example: a request to http://example.com/foo -> https://example.com/foo
-	Redirect "/" "https://__ODFWEB_DOMAIN_NAME__:__ODFWEB_PORT_HTTPS__/"
+    # Redirect all HTTP traffic to HTTPS (preserve path/query)
+    # Uses the configured domain placeholder __ODFWEB_DOMAIN_NAME__
+    # Example: a request to http://example.com/foo -> https://example.com/foo
+    Redirect "/" "https://__ODFWEB_DOMAIN_NAME__:__ODFWEB_PORT_HTTPS__/"
 
-	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
-	# error, crit, alert, emerg.
-	# It is also possible to configure the loglevel for particular
-	# modules, e.g.
-	#LogLevel info ssl:warn
+    # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+    # error, crit, alert, emerg.
+    # It is also possible to configure the loglevel for particular
+    # modules, e.g.
+    #LogLevel info ssl:warn
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
