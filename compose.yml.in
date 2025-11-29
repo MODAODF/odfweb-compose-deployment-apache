@@ -13,6 +13,12 @@ volumes:
   db:
   redis:
 
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: '192.168.246.0/24'
+
 services:
   db:
     image: mariadb:10.6
@@ -74,7 +80,7 @@ services:
       timeout: 10s
 
   editor:
-    image: ossiidev/modaodfweb:3.8.4
+    image: ossiidev/modaodfweb:3.8.4-hotfix202511281600
     restart: always
     environment:
       # Set local timezone to UTC+8

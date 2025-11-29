@@ -19,3 +19,8 @@ if ! php occ richdocuments:activate-config --wopi-url='http://editor:9980/'; the
     printf 'Error: Unable to configure the WOPI URL of the MODAODFWEB service.\n' >&2
     exit 2
 fi
+
+if ! php occ config:app:set richdocuments wopi_allowlist --value 192.168.246.0/24; then
+    printf 'Error: Unable to configure the WOPI allowlist of the MODAODFWEB service.\n' >&2
+    exit 2
+fi
